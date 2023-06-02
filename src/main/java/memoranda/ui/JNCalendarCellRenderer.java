@@ -100,7 +100,7 @@ public class JNCalendarCellRenderer extends javax.swing.table.DefaultTableCellRe
 					label.setBackground(new Color(255,230,230));
 		
 		else if(!isSelected)
-			label.setBackground(Color.WHITE);
+			label.setBackground(Color.green);
 				
 		// always display NREvents
 		if (EventsManager.isNREventsForDate(d))
