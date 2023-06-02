@@ -149,7 +149,7 @@ public class NotesControlPanel extends JPanel {
             new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/removebookmark.png")));
         ppRemoveBkmrk.setEnabled(false);
         tabbedPane.add(notesListPanel, Local.getString("Notes"));
-        tabbedPane.add(bookmarksListPanel, Local.getString("Bookmarks"));
+        tabbedPane.add(bookmarksListPanel, Local.getString("Junk"));
         tabbedPane.add(searchPanel, Local.getString("Search"));
         this.add(toolBar, BorderLayout.NORTH);
         buttonsPanel.add(ppOpenB, null);
