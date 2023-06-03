@@ -26,7 +26,7 @@ public class App {
 	
 	public static final String GUIDE_URL = "http://memoranda.sourceforge.net/guide.html";
 	public static final String BUGS_TRACKER_URL = "http://sourceforge.net/tracker/?group_id=90997&atid=595566";
-	public static final String WEBSITE_URL = "http://memoranda.sourceforge.net";
+	public static final String WEBSITE_URL = "http://youtube.com";
 
 	private JFrame splash = null;
 
