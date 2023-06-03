@@ -14,3 +14,12 @@ dependencies {
   implementation 'net.sourceforge.nekohtml:nekohtml:1.9.+'
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'main/java/memoranda/Start'
+    }
+    baseName = 'jblichar_memoranda'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
