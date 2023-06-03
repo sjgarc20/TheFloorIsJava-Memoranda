@@ -39,7 +39,7 @@ public class App {
 	// public static final String BUILD_INFO = "@BUILD@";
 	
 	public static final String VERSION_INFO = "David Berry";
-	public static final String BUILD_INFO = "@BUILD@";
+	public static final String BUILD_INFO = "This build is the best.";
 	
 	/*========================================================================*/
 

@@ -265,8 +265,8 @@ public class AppFrame extends JFrame {
         this.setTitle("Memoranda - " + CurrentProject.get().getTitle());
         //Added a space to App.VERSION_INFO to make it look some nicer
         statusBar.setText(" Version:" + App.VERSION_INFO + " (Build "
-                + App.BUILD_INFO + " )");
-
+        		+ App.BUILD_INFO + " )");
+        
         jMenuFile.setText(Local.getString("File"));
         jMenuFileExit.setText(Local.getString("Exit"));
         jMenuFileExit.addActionListener(new ActionListener() {
