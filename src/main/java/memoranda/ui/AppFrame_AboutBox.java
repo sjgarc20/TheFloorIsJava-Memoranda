@@ -38,7 +38,8 @@ public class AppFrame_AboutBox extends JDialog implements ActionListener {
               "Ryan Ho (rawsushi@users.sourceforge.net)",
               "Ivan Ribas (ivanrise@users.sourceforge.net)",
               "Jyrki Velhonoja (velhonoja@kapsi.fi>)",
-  			  "Jeremy Whitlock (jwhitlock@starprecision.com)"              
+  			  "Jeremy Whitlock (jwhitlock@starprecision.com)",
+		"Change number 1"              
   };
   String othersHead = Local.getString("Other contributors") + ":";
   String[] others = {
