@@ -89,7 +89,7 @@ public class EventsPanel extends JPanel {
         newEventB.setEnabled(true);
         newEventB.setMaximumSize(new Dimension(24, 24));
         newEventB.setMinimumSize(new Dimension(24, 24));
-        newEventB.setToolTipText(Local.getString("New event"));
+        newEventB.setToolTipText(Local.getString("Change number 2"));
         newEventB.setRequestFocusEnabled(false);
         newEventB.setPreferredSize(new Dimension(24, 24));
         newEventB.setFocusable(false);
