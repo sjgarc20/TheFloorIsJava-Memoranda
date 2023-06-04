@@ -1,4 +1,10 @@
+plugins{
+	id "checkstyle"
+}
+
 apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'checkstyle'
 
 mainClassName = 'main/java/memoranda/Start'
 
@@ -12,5 +18,16 @@ repositories {
 dependencies {
   implementation 'com.io7m.xom:xom:1.2.+'
   implementation 'net.sourceforge.nekohtml:nekohtml:1.9.+'
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25' 
+  implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25' 
 }
 
+task fatJar(type: Jar){
+	manifest {
+		attributes 'Main-Class': 'main.java.memoranda.Start'
+	}
+	baseName = 'ayounes1_memoranda'
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+	with jar
+}
