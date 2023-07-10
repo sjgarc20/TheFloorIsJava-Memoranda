@@ -6,16 +6,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
+import main.java.memoranda.User;
+import main.java.memoranda.UserList;
 import main.java.memoranda.util.Context;
 import main.java.memoranda.util.Local;
 
@@ -26,14 +30,14 @@ import main.java.memoranda.util.Local;
 
 /*$Id: WorkPanel.java,v 1.9 2004/04/05 10:05:44 alexeya Exp $*/
 public class WorkPanel extends JPanel {
+    HashMap<String, User> users = UserList.users;
+    User user;
 	BorderLayout borderLayout1 = new BorderLayout();
 	JToolBar toolBar = new JToolBar();
 	JPanel panel = new JPanel();
 	CardLayout cardLayout1 = new CardLayout();
-
-	public JButton notesB = new JButton();
 	public DailyItemsPanel dailyItemsPanel = new DailyItemsPanel(this);
-	public AdminPanel adminPanel = new AdminPanel();
+	public AdminPanel adminPanel = new AdminPanel(dailyItemsPanel);
 
 	public JButton homeB = new JButton(); //Used to be Agenda
 	public JButton signUpB = new JButton(); //Used to be Tasks
@@ -97,6 +101,7 @@ public class WorkPanel extends JPanel {
 		homeB.setMargin(new Insets(0, 0, 0, 0));
 		homeB.setSelected(true);
 
+		trainerB.setSelected(true);
 		trainerB.setBackground(Color.white);
 		trainerB.setMaximumSize(new Dimension(60, 80));
 		trainerB.setMinimumSize(new Dimension(30, 30));
@@ -121,7 +126,6 @@ public class WorkPanel extends JPanel {
 					"/ui/icons/rhrTrainerIcon.png")));
 		trainerB.setOpaque(false);
 		trainerB.setMargin(new Insets(0, 0, 0, 0));
-		//trainerB.setSelected(true);
 
 		signUpB.setSelected(true);
 		signUpB.setFont(new java.awt.Font("Dialog", 1, 10));
@@ -147,33 +151,6 @@ public class WorkPanel extends JPanel {
 		signUpB.setOpaque(false);
 		signUpB.setMaximumSize(new Dimension(60, 80));
 		signUpB.setBackground(Color.white);
-
-		notesB.setFont(new java.awt.Font("Dialog", 1, 10));
-		notesB.setBackground(Color.white);
-		notesB.setBorder(null);
-		notesB.setMaximumSize(new Dimension(60, 80));
-		notesB.setMinimumSize(new Dimension(30, 30));
-		notesB.setOpaque(false);
-		notesB.setPreferredSize(new Dimension(60, 50));
-		notesB.setBorderPainted(false);
-		notesB.setContentAreaFilled(false);
-		notesB.setFocusPainted(false);
-		notesB.setHorizontalTextPosition(SwingConstants.CENTER);
-		notesB.setText(Local.getString("Notes"));
-		notesB.setVerticalAlignment(SwingConstants.TOP);
-		notesB.setVerticalTextPosition(SwingConstants.BOTTOM);
-		notesB.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				notesB_actionPerformed(e);
-			}
-		});
-		notesB.setIcon(
-			new ImageIcon(
-				main.java.memoranda.ui.AppFrame.class.getResource(
-					"/ui/icons/rhrNotesIcon.png")));
-		notesB.setMargin(new Insets(0, 0, 0, 0));
-		notesB.setSelected(true);
-		this.setPreferredSize(new Dimension(1073, 300));
 
 		adminB.setSelected(true);
 		adminB.setMargin(new Insets(0, 0, 0, 0));
@@ -209,8 +186,7 @@ public class WorkPanel extends JPanel {
 
 		panel.add(adminPanel, "FILES");
 		toolBar.add(homeB, null); 
-		toolBar.add(signUpB, null); 
-		toolBar.add(notesB, null);
+		toolBar.add(signUpB, null);
 	    toolBar.add(trainerB, null); 
 		toolBar.add(adminB, null);
 		currentB = homeB;
@@ -223,13 +199,13 @@ public class WorkPanel extends JPanel {
 		panel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
 		adminPanel.setBorder(null);
+		
+		homeB_actionPerformed(null);
 	}
 
 	public void selectPanel(String pan) {
 		if (pan != null) {
-			if (pan.equals("NOTES"))
-				notesB_actionPerformed(null);
-			else if (pan.equals("TASKS"))
+			if (pan.equals("TASKS"))
 				signUpB_actionPerformed(null);
 			else if (pan.equals("EVENTS"))
 				trainerB_actionPerformed(null);
@@ -244,14 +220,6 @@ public class WorkPanel extends JPanel {
 		setCurrentButton(homeB);
 		Context.put("CURRENT_PANEL", "AGENDA");
 	}
-
-	public void notesB_actionPerformed(ActionEvent e) {
-		cardLayout1.show(panel, "DAILYITEMS");
-		dailyItemsPanel.selectPanel("NOTES");
-		setCurrentButton(notesB);
-		Context.put("CURRENT_PANEL", "NOTES");
-	}
-
 	public void signUpB_actionPerformed(ActionEvent e) {
 		cardLayout1.show(panel, "DAILYITEMS");
 		dailyItemsPanel.selectPanel("TASKS");
@@ -260,16 +228,34 @@ public class WorkPanel extends JPanel {
 	}
 
 	public void trainerB_actionPerformed(ActionEvent e) {
-		cardLayout1.show(panel, "DAILYITEMS");
-		dailyItemsPanel.selectPanel("EVENTS");
-		setCurrentButton(trainerB);
-		Context.put("CURRENT_PANEL", "EVENTS");
+	    for (User u : users.values()) {
+            if (u.loginStatus()) {
+               user = u;
+            }
+         }
+	    if(user == null || user.getPermissions() < 1) {
+	        JOptionPane.showMessageDialog(null, "Unable to use tab");
+	    } else {
+    		cardLayout1.show(panel, "DAILYITEMS");
+    		dailyItemsPanel.selectPanel("EVENTS");
+    		setCurrentButton(trainerB);
+    		Context.put("CURRENT_PANEL", "EVENTS");
+	    }
 	}
 
 	public void adminB_actionPerformed(ActionEvent e) {
-		cardLayout1.show(panel, "FILES");
-		setCurrentButton(adminB);
-		Context.put("CURRENT_PANEL", "FILES");
+	    for (User u : users.values()) {
+            if (u.loginStatus()) {
+               user = u;
+            }
+         }
+        if(user == null || user.getPermissions() < 2) {
+            JOptionPane.showMessageDialog(null, "Unable to use tab");
+        } else {
+    		cardLayout1.show(panel, "FILES");
+    		setCurrentButton(adminB);
+    		Context.put("CURRENT_PANEL", "FILES");
+        }
 	}
 
 	void setCurrentButton(JButton cb) {

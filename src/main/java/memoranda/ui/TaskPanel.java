@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -39,6 +40,9 @@ import main.java.memoranda.util.Context;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.Util;
+import main.java.memoranda.UserList;
+import main.java.memoranda.User;
+import main.java.memoranda.Event;
 
 /*$Id: TaskPanel.java,v 1.27 2007/01/17 20:49:12 killerjoe Exp $*/
 public class TaskPanel extends JPanel {
@@ -220,7 +224,7 @@ public class TaskPanel extends JPanel {
         enrollButton.setPreferredSize(new Dimension(196, 96));
         enrollButton.setMinimumSize(new Dimension(196, 96));
         enrollButton.setMaximumSize(new Dimension(196, 96));
-        enrollButton.setText("Sign Up");
+        enrollButton.setText("Sign Up");        
         
         infoButton.setFocusable(false);
         infoButton.setBorderPainted(true);
@@ -346,6 +350,46 @@ public class TaskPanel extends JPanel {
         signUpBar.add(joinWaitlistButton, null);
         
         this.add(signUpBar, BorderLayout.NORTH);
+
+
+
+
+
+        EventsTable eventsTable = new EventsTable();
+
+        scrollPane.getViewport().setBackground(Color.white);
+        eventsTable.setMaximumSize(new Dimension(32767, 32767));
+        eventsTable.setRowHeight(24);
+
+        scrollPane.getViewport().add(eventsTable, null);
+        this.add(scrollPane, BorderLayout.CENTER);
+
+        enrollButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Get logged in user
+                User user = new User();
+                HashMap<String, User> users = UserList.users;
+                for (User u : users.values()) {
+                    if (u.loginStatus()) {
+                       user = u;
+                    }
+                 }
+                // Get selected row
+                int row = eventsTable.getSelectedRow();
+                
+                // Get selected lesson/event
+                Event event = (Event) eventsTable.events.get(row);
+                String id = (String) event.getId();
+
+                // Add lesson id to lessons list
+                if(!user.getLessons().contains(id)) {
+                    user.addLesson(id);
+                    System.out.print("\nUser " + user.getUsername() + "has enrolled for class ID number " + id + ".\n");
+                }
+            }
+        });
+
+
         
 
         PopupListener ppListener = new PopupListener();
