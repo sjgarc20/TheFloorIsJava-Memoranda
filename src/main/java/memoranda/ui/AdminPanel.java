@@ -3,8 +3,11 @@ package main.java.memoranda.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import main.java.memoranda.User;
+import main.java.memoranda.UserList;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -30,6 +33,20 @@ public class AdminPanel extends JPanel {
 
     JComboBox classes;
     JTextField trainerUserName;
+
+    JTextField userName;
+
+    JTextField userPassword;
+
+    JComboBox userTypeList;
+
+    JTextField firstName;
+
+    JTextField lastName;
+
+    JComboBox ranksList;
+
+    JTextField id;
 
     EventsTable eventsTable = new EventsTable();
 
@@ -58,7 +75,7 @@ public class AdminPanel extends JPanel {
                 //Creating first section of Admin Panel UI used to create a new user.
 
                 //Instruction text informing user how to create new user
-                JLabel createUserInstruction = new JLabel("To create a new user, enter in their username and password, select a user type and click the 'Create new user' button.");
+                JLabel createUserInstruction = new JLabel("To create a new user, enter in their username, password and info, select a user type and click the 'Create new user' button.");
                 add(createUserInstruction);
 
                 //Creating new panel for the rest of the create user UI. A FlowLayout is used, which will
@@ -71,14 +88,14 @@ public class AdminPanel extends JPanel {
                 JLabel userNameLabel = new JLabel("Username: ");
                 createUserPanel.add(userNameLabel);
                 //Textbox to enter username for new user with space for 15 characters
-                JTextField userName = new JTextField(15);
+                userName = new JTextField(15);
                 userName.setMaximumSize(userName.getPreferredSize());
                 createUserPanel.add(userName);
                 //Label for password textbox
                 JLabel userPasswordLabel = new JLabel("Password: ");
                 createUserPanel.add(userPasswordLabel);
                 //Textbox to enter user password with space for 15 characters
-                JTextField userPassword = new JTextField(15);
+                userPassword = new JTextField(15);
                 userPassword.setMaximumSize(userPassword.getPreferredSize());
 
                 createUserPanel.add(userPassword);
@@ -86,7 +103,7 @@ public class AdminPanel extends JPanel {
                 JLabel typeLabel = new JLabel("User type: ");
                 createUserPanel.add(typeLabel);
                 String userTypes[] = {"Student", "Trainer", "Admin"};
-                JComboBox userTypeList = new JComboBox<>(userTypes);
+                userTypeList = new JComboBox<>(userTypes);
                 userTypeList.setMaximumRowCount(1); // Display only one option initially
 
         // Add an action listener to the combo box
@@ -110,6 +127,12 @@ public class AdminPanel extends JPanel {
 
                 //Button to create user with the inputted information
                 JButton createUser = new JButton("Create new user");
+
+        createUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                createUser_actionPerformed(e);
+            }
+        });
                 createUserPanel.add(createUser);
                 add(createUserPanel);
 
@@ -125,45 +148,45 @@ public class AdminPanel extends JPanel {
         JPanel editUserPanel = new JPanel();
         editUserPanel.setLayout(new BoxLayout(editUserPanel, BoxLayout.X_AXIS));
         //Label for username textbox
-        JLabel searchedUserNameLabel = new JLabel("Username: ");
-        editUserPanel.add(searchedUserNameLabel);
+//        JLabel searchedUserNameLabel = new JLabel("Username: ");
+//        editUserPanel.add(searchedUserNameLabel);
         //Textbox to enter username for new user with space for 15 characters
-        JTextField searchedUserName = new JTextField(15);
-        searchedUserName.setMaximumSize(searchedUserName.getPreferredSize());
-        editUserPanel.add(searchedUserName);
-        //Creating a list of user types that can be selected from
-        JLabel searchedTypeLabel = new JLabel("User type: ");
-        editUserPanel.add(searchedTypeLabel);
-        String searchedserTypes[] = {"Student", "Trainer", "Admin"};
-        JComboBox searchedUserTypeList = new JComboBox<>(userTypes);
-        searchedUserTypeList.setMaximumRowCount(1); // Display only one option initially
-
-        searchedUserTypeList.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JComboBox<String> source = (JComboBox<String>) e.getSource();
-                int itemCount = source.getItemCount();
-                boolean popupVisible = source.isPopupVisible();
-
-                if (itemCount > 1 && !popupVisible) {
-                    source.setMaximumRowCount(itemCount); // Expand the list
-                } else {
-                    source.setMaximumRowCount(1); // Display only one option
-                }
-            }
-        });
+//        JTextField searchedUserName = new JTextField(15);
+//        searchedUserName.setMaximumSize(searchedUserName.getPreferredSize());
+//        editUserPanel.add(searchedUserName);
+//        //Creating a list of user types that can be selected from
+//        JLabel searchedTypeLabel = new JLabel("User type: ");
+//        editUserPanel.add(searchedTypeLabel);
+//        String searchedserTypes[] = {"Student", "Trainer", "Admin"};
+//        JComboBox searchedUserTypeList = new JComboBox<>(userTypes);
+//        searchedUserTypeList.setMaximumRowCount(1); // Display only one option initially
+//
+//        searchedUserTypeList.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                JComboBox<String> source = (JComboBox<String>) e.getSource();
+//                int itemCount = source.getItemCount();
+//                boolean popupVisible = source.isPopupVisible();
+//
+//                if (itemCount > 1 && !popupVisible) {
+//                    source.setMaximumRowCount(itemCount); // Expand the list
+//                } else {
+//                    source.setMaximumRowCount(1); // Display only one option
+//                }
+//            }
+//        });
         //Set maximum size to preferred size so item isn't oversized in window
-        searchedUserTypeList.setMaximumSize(searchedUserTypeList.getPreferredSize());
-        editUserPanel.add(searchedUserTypeList);
+//        searchedUserTypeList.setMaximumSize(searchedUserTypeList.getPreferredSize());
+//        editUserPanel.add(searchedUserTypeList);
         //Creating label and textbox for first and last name
         JLabel firstNameLabel = new JLabel("First name: ");
         editUserPanel.add(firstNameLabel);
-        JTextField firstName = new JTextField(15);
+        firstName = new JTextField(15);
         firstName.setMaximumSize(firstName.getPreferredSize());
         editUserPanel.add(firstName);
         JLabel lastNameLabel = new JLabel("Last name: ");
         editUserPanel.add(lastNameLabel);
-        JTextField lastName = new JTextField(15);
+        lastName = new JTextField(15);
         lastName.setMaximumSize(lastName.getPreferredSize());
         editUserPanel.add(lastName);
 
@@ -171,7 +194,7 @@ public class AdminPanel extends JPanel {
         JLabel rankLabel = new JLabel("Belt rank: ");
         String[] ranks = {"White", "Yellow", "Orange", "Purple", "Blue", "Blue Stripe", "Green", "Green Stripe", "Brown1", "Brown2", "Brown3", "Black1", "Black2", "Black3"};
 
-        JComboBox ranksList = new JComboBox<>(ranks);
+        ranksList = new JComboBox<>(ranks);
         ranksList.setMaximumRowCount(1); // Display only one option initially
 
         ranksList.addActionListener(new ActionListener() {
@@ -194,7 +217,7 @@ public class AdminPanel extends JPanel {
         //Creating label and testbox for ID
         JLabel idLabel = new JLabel("ID: ");
         editUserPanel.add(idLabel);
-        JTextField id = new JTextField(15);
+        id = new JTextField(15);
         id.setMaximumSize(id.getPreferredSize());
         editUserPanel.add(id);
 
@@ -370,6 +393,10 @@ public class AdminPanel extends JPanel {
 //            if (d == null)
 //                d.getElement().removeChild(getEvent(date, hh, mm).getContent());
 //        }
+    }
+
+    void createUser_actionPerformed(ActionEvent e) {
+        UserList.addUser(new main.java.memoranda.User(firstName.getText(), lastName.getText(), userName.getText(), userPassword.getText(), userTypeList.getSelectedIndex(), ranksList.getSelectedIndex()));
     }
 
     private void saveEvents() {
