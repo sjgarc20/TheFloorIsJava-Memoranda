@@ -30,6 +30,8 @@ public class User implements UserInterface {
     private CalendarDate joinDate;
     private boolean login;
     private String password;
+  
+    private ArrayList<String> lessons;
     
     //Availability is saved as integers for each day of the week.
     // Stored in a 7x2 matrix so each day has a start and end time.
@@ -74,6 +76,7 @@ public class User implements UserInterface {
             availability[i][0] = 0;
             availability[i][1] = 0;
         }
+        lessons = new ArrayList<>();
     }
 
     @Override
@@ -198,5 +201,13 @@ public class User implements UserInterface {
                 "Rank: " + getRank() + "\n" +
                 "Password: " + getPassword() + "\n" +
                 "Join Date: " + getJoinDateAsString() + "\n";
+    }
+    
+    public void addLesson(String id) {
+        lessons.add(id);
+    }
+    
+    public ArrayList<String> getLessons() {
+        return lessons;
     }
 }
