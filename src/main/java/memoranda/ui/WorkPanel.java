@@ -229,6 +229,8 @@ public class WorkPanel extends JPanel {
 		panel.setBorder(null);
 		dailyItemsPanel.setBorder(null);
 		adminPanel.setBorder(null);
+		
+		homeB_actionPerformed(null);
 	}
 
 	public void selectPanel(String pan) {
