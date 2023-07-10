@@ -28,7 +28,7 @@ public class UserList {
      Returns: void
      Description: Will add user object to hashmap.
      */
-    public void addUser(User user) {
+    public static void addUser(User user) {
         users.put(user.getUsername(), user);
     }
 
