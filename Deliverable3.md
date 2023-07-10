@@ -106,7 +106,7 @@ Answer as a team!
 
 **How do you feel at this point? Get a pulse on the optimism of the team.**
 
-> The team is confident witht our work.
+> The team is confident with our work.
 
 ### Contributions:
 
