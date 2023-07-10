@@ -62,6 +62,20 @@ public class User implements UserInterface {
         }
     }
 
+    public User(String firstName, String lastName, String username, String password, int permissions, int rank){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.permissions = permissions;
+        this.rank = rank;
+        for(int i = 0; i < 7; i++) {
+            availability[i][0] = 0;
+            availability[i][1] = 0;
+        }
+        notes = new ArrayList<>();
+    }
+
     @Override
     public void setFirstName(String firstName) {
         this.firstName = firstName;
